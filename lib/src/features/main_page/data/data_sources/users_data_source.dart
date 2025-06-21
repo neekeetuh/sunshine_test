@@ -35,6 +35,9 @@ class UsersNetworkDataSource implements IUsersDataSource {
 
       //однако, это не гарантирует 100% успешную работу запросов, поэтому при возникновении ошибок, можно попробовать запустить
       //приложение через браузер
+
+      //если загрузка происходит слишком длительное количество времени (5+ секунд), скорее всего cloudflare заметил подозрительную
+      //активность и запросил пройти проверку на бота, что нельзя сделать из самого приложения
       options: Options(
         responseType: ResponseType.plain,
         headers: {
@@ -44,6 +47,13 @@ class UsersNetworkDataSource implements IUsersDataSource {
           'Connection': 'keep-alive',
           'Referer': 'https://www.google.com/',
           'Accept-Language': 'en-US,en;q=0.9',
+          'DNT': '1',
+          'Sec-Fetch-Site': 'none',
+          'Sec-Fetch-Mode': 'no-cors',
+          'Sec-Fetch-Dest': 'empty',
+          'Cache-Control': 'max-age=0',
+          'Pragma': 'no-cache',
+          'Upgrade-Insecure-Requests': '1',
         },
       ),
     );
